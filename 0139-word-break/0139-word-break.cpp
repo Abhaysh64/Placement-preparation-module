@@ -1,24 +1,23 @@
 class Solution {
 public:
-    map<string,int>m;
-    bool help(int i,string &s,vector<int>&dp){
-        if(i==s.size())return true;
-        if(dp[i]!=-1)return dp[i];
+    bool solve(string &s, map<string,bool>& mp, int ind, string temp,map<pair<int,string>,bool>&dp){
+        if(ind == s.length() && temp == "") return true;
+        if(ind == s.length()) return false;
+        if(dp.find({ind,temp})!=dp.end()) return dp[{ind,temp}];
         bool ans = false;
-        string a = "";
-        for(int k=i;k<s.size();k++){
-            a += s[k];
-            if(m[a]){
-                ans |= help(k+1,s,dp);
-            }
+        temp+=s[ind];
+        if(mp.find(temp)!=mp.end()){
+            ans = solve(s,mp,ind+1,"",dp);
         }
-        return  dp[i] = ans;
+        ans = ans || solve(s,mp,ind+1,temp,dp);
+        
+        return dp[{ind,temp}] = ans;
     }
-    bool wordBreak(string s, vector<string>& w) {
-        for(auto i:w){
-            m[i]++;
-        }
-        vector<int>dp(s.size(),-1);
-        return help(0,s,dp);
+
+    bool wordBreak(string s, vector<string>& wordDict) {
+        map<string,bool>mp;
+        map<pair<int,string>,bool> dp;
+        for(auto word: wordDict) mp[word] = true;
+        return solve(s,mp,0,"",dp);
     }
 };
