@@ -1,14 +1,13 @@
 class Solution {
 public:
-    int findDuplicate(vector<int>& nums) {
-        vector<bool>hash(nums.size(),false);
-    for(int i=0;i<nums.size();i++)
-        {
-        if(hash[nums[i]]){return nums[i];}
-        hash[nums[i]]=true;
-        
+    int findDuplicate(std::vector<int>& nums) {
+        std::unordered_set<int> seen;
+        for (int num : nums) {
+            if (seen.find(num) != seen.end()) {
+                return num;
+            }
+            seen.insert(num);
         }
-        
-        return 1;
+        return -1;  // Just to satisfy the compiler, this should never be reached
     }
 };
