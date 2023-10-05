@@ -1,40 +1,28 @@
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
-        int n=nums.size();
-        vector<int>ans;
-        int el1=INT_MIN,el2=INT_MIN;
-        int cnt1=0,cnt2=0;
-        for(int i=0;i<n;i++){
-            if(cnt1==0 && el2!=nums[i]){
-                el1=nums[i];
-                cnt1++;
-            }else if(cnt2==0 && el1!=nums[i]){
-                el2=nums[i];
-                cnt2++;
-            }else if(el1==nums[i]){
-                cnt1++;
-            }else if(el2==nums[i]){
-                cnt2++;
-            }else{
-                cnt1--;
-                cnt2--;
+        // Create a frequency map to store the count of each element
+        unordered_map<int, int> elementCountMap;
+        
+        // Iterate through the input array to count element occurrences
+        for(int i = 0; i < nums.size(); i++) {
+            elementCountMap[nums[i]]++;
+        }
+        
+        vector<int> majorityElements;
+        int threshold = nums.size() / 3;
+        
+        // Iterate through the frequency map to identify majority elements
+        for(auto elementCountPair : elementCountMap) {
+            int element = elementCountPair.first;
+            int count = elementCountPair.second;
+            
+            // Check if the element count is greater than the threshold
+            if(count > threshold) {
+                majorityElements.push_back(element);
             }
         }
-        cnt1=0,cnt2=0;
-        for(int i=0;i<n;i++){
-            if(nums[i]==el1){
-                cnt1++;
-                if(cnt1==n/3+1){
-                    ans.push_back(el1);
-                }
-            }else if(nums[i]==el2){
-                cnt2++;
-                if(cnt2==n/3+1){
-                    ans.push_back(el2);
-                }
-            }
-        }
-        return ans;
+        
+        return majorityElements; 
     }
 };
